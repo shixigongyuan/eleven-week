@@ -56,8 +56,8 @@ class Model():
                 tf.summary.histogram('embed', embed)
 
             data = tf.nn.embedding_lookup(embed, self.X)
-			
-	    def get_a_cell(lstm_size, keep_prob):
+	
+            def get_a_cell(lstm_size, keep_prob):
             lstm = tf.nn.rnn_cell.BasicLSTMCell(lstm_size)
             drop = tf.nn.rnn_cell.DropoutWrapper(lstm, output_keep_prob=keep_prob)
             return drop
@@ -66,7 +66,7 @@ class Model():
             ##################
             # Your Code here
             ##################
-			cell = tf.nn.rnn_cell.MultiRNNCell(
+            cell = tf.nn.rnn_cell.MultiRNNCell(
                 [get_a_cell(self.dim_embedding, self.keep_prob) for _ in range(self.rnn_layers)]
             )
            
@@ -74,19 +74,19 @@ class Model():
             outputs_tensor,final_state = tf.nn.dynamic_rnn(cell, data,initial_state=self.state_tensor)
             self.outputs_state_tensor = final_state
 			
-		# concate every time step
+            # concate every time step
         seq_output = tf.concat(outputs_tensor, 1)
 
         # flatten it
         seq_output_final = tf.reshape(tf.concat(outputs_tensor, 1), [-1, self.dim_embedding])
-		print('seq_output.shape: ', seq_output.shape)
+        print('seq_output.shape: ', seq_output.shape)
         print('seq_output_final.shape: ', seq_output_final.shape)
 
         with tf.variable_scope('softmax'):
             ##################
             # Your Code here
             ##################
-			W = tf.get_variable('W', [self.dim_embedding, self.num_words])
+            W = tf.get_variable('W', [self.dim_embedding, self.num_words])
             b = tf.get_variable('b', [self.num_words])
             
         logits = tf.matmul(seq_output_final, W) + b
