@@ -7,7 +7,7 @@ import tensorflow as tf
 
 class Model():
     def __init__(self, learning_rate=0.001, batch_size=16, num_steps=32, num_words=5000, dim_embedding=128, rnn_layers=3):
-        r"""初始化函数
+        """初始化函数
 
         Parameters
         ----------
@@ -95,12 +95,16 @@ class Model():
 
         self.predictions = tf.nn.softmax(logits, name='predictions')
 
-        loss = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=tf.reshape(self.Y, [-1])
-        mean, var = tf.nn.moments(logits, -1)
+        y_one_hot = tf.one_hot(self.Y, self.num_words)
+        print('y_one_hot.shape: ', y_one_hot.shape)
+        y_reshaped = tf.reshape(y_one_hot, logits.get_shape())
+	
+        loss = tf.nn.sparse_softmax_cross_entropy_with_logits(labels =  y_reshaped,logits = logits)
+        mean, var1 = tf.nn.moments(logits, -1)
         self.loss = tf.reduce_mean(loss)
         tf.summary.scalar('logits_loss', self.loss)
 
-        var_loss = tf.divide(10.0, 1.0+tf.reduce_mean(var))
+        var_loss = tf.divide(10.0, 1.0+tf.reduce_mean(var1))
         tf.summary.scalar('var_loss', var_loss)
         # 把标准差作为loss添加到最终的loss里面，避免网络每次输出的语句都是机械的重复
         self.loss = self.loss + var_loss
