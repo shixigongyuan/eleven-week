@@ -58,7 +58,7 @@ with tf.Session() as sess:
             ##################
             # Your Code here
             ##################
-			feed_dict = {model.X:dl[0],model.Y:dl[1],model.keep_prob:FLAGS.keep_prob}
+            feed_dict = {model.X:dl[0],model.Y:dl[1],model.keep_prob:FLAGS.keep_prob}
 
             gs, _, state, l, summary_string = sess.run(
                 [model.global_step, model.optimizer, model.outputs_state_tensor, model.loss, model.merged_summary_op], feed_dict=feed_dict)
