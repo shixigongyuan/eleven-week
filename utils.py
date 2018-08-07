@@ -27,7 +27,7 @@ def index_data(sentences, dictionary):
     return index.reshape(shape)
 
 
-def get_train_data(vocabulary, batch_size, num_steps):
+def get_train_data(vocabulary, dictionary, batch_size, num_steps):
     ##################
     # Your Code here
 	##################
