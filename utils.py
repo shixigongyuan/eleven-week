@@ -15,8 +15,8 @@ def read_data(filename):
 
 
 def index_data(sentences, dictionary):
-    shape = sentences.shape
-    sentences = sentences.reshape([-1])
+    shape = np.shape(sentences)
+    sentences = np.reshape(sentences, [-1])
     index = np.zeros_like(sentences, dtype=np.int32)
     for i in range(len(sentences)):
         try:
